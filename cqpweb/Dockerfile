@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt install -y \
-    apache2 subversion php build-essential r-base libapache2-mod-php php-mysql php-gd sendmail mysql-client php-mbstring \
+    apache2 subversion php build-essential r-base libapache2-mod-php php-mysql php-gd sendmail mysql-client php-mbstring curl bash zip \
     && svn co http://svn.code.sf.net/p/cwb/code/cwb/trunk cwb && \
     svn co http://svn.code.sf.net/p/cwb/code/perl/trunk cwb-perl && \
     mkdir -p /data/corpora/cqpweb/upload /data/corpora/cqpweb/tmp /data/corpora/cqpweb/corpora /data/corpora/cqpweb/registry && \
