@@ -4,7 +4,7 @@ data="/data/corpora/cqpweb/corpora/CORPUSNAME"
 regfile="CORPUSNAME"
 name="CORPUSNAME"
 registry="/data/corpora/cqpweb/registry"
-infile="/workspace/src/vrts/corpus_CORPUSNAME.txt"
+infile="/workspace/src/vrts/corpus.txt"
 threads="10"
 
 
