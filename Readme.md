@@ -21,10 +21,10 @@ Password: letmein
 # Install and run CQPweb inside containers
 
 ```bash
-**raul@kaneda ~/tmp/cqpweb-docker>** git clone https://github.com/daedalusLAB/cqpweb-docker.git
+raul@kaneda ~/tmp/cqpweb-docker>** git clone https://github.com/daedalusLAB/cqpweb-docker.git
 
-**raul@kaneda ~/tmp/cqpweb-docker> cd cqpweb-docker**
-**raul@kaneda ~/tmp/cqpweb-docker> docker-compose build**
+raul@kaneda ~/tmp/cqpweb-docker> cd cqpweb-docker
+raul@kaneda ~/tmp/cqpweb-docker> docker-compose build
 db uses an image, skipping
 Building cqpweb
 Step 1/14 : FROM ubuntu:20.04
@@ -58,7 +58,7 @@ Removing intermediate container 5900eb91c97a
 Successfully built 09972ebcd6df
 Successfully tagged cqpweb-docker_cqpweb:latest
 
-**raul@kaneda ~/tmp/cqpweb-docker> docker-compose up -d**
+raul@kaneda ~/tmp/cqpweb-docker> docker-compose up -d
 Starting cqpweb-docker_db_1 ... done
 Starting cqpweb-docker_cqpweb_1 ... done
 ```
@@ -66,13 +66,13 @@ Starting cqpweb-docker_cqpweb_1 ... done
 Now CQPWeb images are created and is running in background. You can stop it this way:
 
 ```bash
-**raul@kaneda ~/tmp/cqpweb-docker> docker-compose stop**
+raul@kaneda ~/tmp/cqpweb-docker> docker-compose stop
 ```
 
 You can see CQPweb logs this way:
 
 ```bash
-**raul@kaneda ~/tmp/cqpweb-docker> docker-compose logs**
+raul@kaneda ~/tmp/cqpweb-docker> docker-compose logs
 db_1      | 2022-06-17T09:09:45.563862Z 0 [Note] InnoDB: Buffer pool(s) load completed at 220617  9:09:45
 db_1      | 2022-06-17T09:09:45.564242Z 0 [Note] Found ca.pem, server-cert.pem and server-key.pem in data directory. Trying to enable SSL support using them.
 db_1      | 2022-06-17T09:09:45.564249Z 0 [Note] Skipping generation of SSL certificates as certificate files are present in data directory.
@@ -134,12 +134,12 @@ First of all we have to create a corpus.txt file to populate our corpus database
 
 ```bash
 
-**raul@kaneda ~/tmp/cqpweb-docker> cd src/example_vrts
+raul@kaneda ~/tmp/cqpweb-docker> cd src/example_vrts
 raul@kaneda ~/tmp/cqpweb-docker/src/example_vrts> echo "<corpus id=\"test\">" > corpus.txt
 raul@kaneda ~/tmp/cqpweb-docker/src/example_vrts> cat *.vrt >> corpus.txt
 raul@kaneda ~/tmp/cqpweb-docker/src/example_vrts> echo "</corpus>" >> corpus.txt
 
-raul@kaneda ~/tmp/cqpweb-docker/src/example_vrts> cp ../run_parallel_cwb-make_CORPUSNAME.sh run_parallel_cwb-make_test.sh** 
+raul@kaneda ~/tmp/cqpweb-docker/src/example_vrts> cp ../run_parallel_cwb-make_CORPUSNAME.sh run_parallel_cwb-make_test.sh
 ```
 
 Modify file and replace **CORPUSNAME** with **test**
@@ -236,12 +236,12 @@ Copy corpus.txt and run_parallel_cwb-make_test.sh inside the container and exec 
 
 ```bash
 
-**docker cp run_parallel_cwb-make_test.sh cqpweb-docker_cqpweb_1:/tmp
+docker cp run_parallel_cwb-make_test.sh cqpweb-docker_cqpweb_1:/tmp
 docker cp corpus.txt cqpweb-docker_cqpweb_1:/tmp
-docker exec -it cqpweb-docker_cqpweb_1 bash**
-**root@350edeb5952b:/# mkdir /data/corpora/cqpweb/corpora/test
+docker exec -it cqpweb-docker_cqpweb_1 bash
+root@350edeb5952b:/# mkdir /data/corpora/cqpweb/corpora/test
 root@350edeb5952b:/# cd /tmp
-root@350edeb5952b:/tmp# ./run_parallel_cwb-make_test.sh**
+root@350edeb5952b:/tmp# ./run_parallel_cwb-make_test.sh
 Undeclared element attribute <s file=...> ignored (file /tmp/corpus.txt, line #5, warning issued only once).
 Undeclared element attribute <s starttime=...> ignored (file /tmp/corpus.txt, line #5, warning issued only once).
 ```
@@ -397,7 +397,7 @@ Edit getClips.php file in your local machine and change settings you need. Mainl
     "headers_after_XML" => ["Matchbegin corpus position", "Matchend corpus position", "Video URL", "Video Snippet", "Video Snippet (long)", "Audio Snippet", "Audio Snippet (long)", "Screenshot"],
     "snippet_long_context" => 2, # Default here is seconds e.g. two seconds to either side
     "video_snippet_long_template" => "https://gallo.case.edu/cgi-bin/snippets/newsscape_mp4_snippet.cgi?file={{video_id}}&start={{start_time_long}}&end={{end_time_long}}",
-    **"download_url" => "http://kaneda.inf.um.es/CQPweb/downloads/",**
+    "download_url" => "http://kaneda.inf.um.es/CQPweb/downloads/",
     # download_path MUST exists and have right permissions. Web server must have write permissions to this directory.
     "download_path" => "/var/www/html/CQPweb/downloads/",
     "auto_download" => true, # If true, the download will be run automatically.
@@ -407,8 +407,8 @@ Edit getClips.php file in your local machine and change settings you need. Mainl
 and now
 
 ```bash
-**raul@kaneda ~/tmp/cqpweb-docker/src> docker cp getClips.php cqpweb-docker_cqpweb_1:/var/www/html/CQPweb/lib/plugins
-raul@kaneda ~/tmp/cqpweb-docker/src> docker exec -it cqpweb-docker_cqpweb_1 bash**
+raul@kaneda ~/tmp/cqpweb-docker/src> docker cp getClips.php cqpweb-docker_cqpweb_1:/var/www/html/CQPweb/lib/plugins
+raul@kaneda ~/tmp/cqpweb-docker/src> docker exec -it cqpweb-docker_cqpweb_1 bash
 root@350edeb5952b:/# mkdir /var/www/html/CQPweb/downloads/
 root@350edeb5952b:~# chmod 777  /var/www/html/CQPweb/downloads/
 root@350edeb5952b:~# chown www-data.www-data /var/www/html/CQPweb/downloads/
