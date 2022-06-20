@@ -408,6 +408,9 @@ and now
 
 ```bash
 raul@kaneda ~/tmp/cqpweb-docker/src> docker cp getClips.php cqpweb-docker_cqpweb_1:/var/www/html/CQPweb/lib/plugins
+raul@kaneda ~/tmp/cqpweb-docker/src> docker cp library.jpg cqpweb-docker_cqpweb_1:/var/www/html/CQPweb/downloads/
+raul@kaneda ~/tmp/cqpweb-docker/src> docker cp index.php cqpweb-docker_cqpweb_1:/var/www/html/CQPweb/downloads/
+
 raul@kaneda ~/tmp/cqpweb-docker/src> docker exec -it cqpweb-docker_cqpweb_1 bash
 root@350edeb5952b:/# mkdir /var/www/html/CQPweb/downloads/
 root@350edeb5952b:~# chmod 777  /var/www/html/CQPweb/downloads/
@@ -440,7 +443,19 @@ And click in ‘Download clips’
 
 ![Untitled](images/Untitled%2015.png)
 
-You’ll get a file similar to this. URL will change.
+You'll get a page similar to this:
+
+![Untitled](images/download_zip.jpg)
+
+Server will download clips of the search in the right frames. 
+
+It can last for a few seconds to a long long time if the number of videos is long. 
+
+Click Download button to download the .zip file with the videos. 
+
+You can change the file name when the browser asks for it.
+
+If you decide to install the plugin without  **‘auto_download’** settings .zip file won’t be downloaded and you’ll get a file similar to this. URL will change.
 
 ```bash
 ########################################################################################## 
@@ -463,15 +478,6 @@ curl -L -o 640-7.mp4 "https://gallo.case.edu/cgi-bin/snippets/newsscape_mp4_snip
 curl -L -o 640-8.mp4 "https://gallo.case.edu/cgi-bin/snippets/newsscape_mp4_snippet.cgi?file=097335da-7098-11e6-90a9-089e01ba034d&start=1682.83&end=1687.32"
 ```
 
-Server will download clips of the search in the right frames. It can last for a few seconds to a long long time if the number of videos is long. 
-
-Visit the url and download the .zip file with the videos. 
-
-If you have an error like this that’s because videos are still downloading. Give it some more time.
-
-![Untitled](images/Untitled%2016.png)
-
-If you decide to install the plugin without  **‘auto_download’** settings .zip file won’t be downloaded. 
 
 ```bash
    "auto_download" => false, # If true, the download will be run automatically.
@@ -482,7 +488,7 @@ You can always download videos this way. Open a terminal in your computer and ex
 ```bash
 mkdir first_of_all_clips
 cd first_of_all_clips
-bash ./concordance.txt
+bash ../concordance.txt
 ```
 
 ![https://images.unsplash.com/photo-1627850650793-3f8d5231ee19?ixlib=rb-1.2.1&q=80&cs=tinysrgb&fm=jpg&crop=entropy](https://images.unsplash.com/photo-1627850650793-3f8d5231ee19?ixlib=rb-1.2.1&q=80&cs=tinysrgb&fm=jpg&crop=entropy)
