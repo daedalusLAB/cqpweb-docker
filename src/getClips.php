@@ -28,7 +28,7 @@ class getClips extends QueryDownloaderBase implements QueryDownloader
 
   private string $random_filename;
   private array $curl_lines;
-  
+
 
   ## Option to add extra configuration in here as needed
   public function __construct(array $extra_config = [])
@@ -255,7 +255,7 @@ class getClips extends QueryDownloaderBase implements QueryDownloader
     $additional_columns = implode(array_values($completed_urls));
     # print $additional_columns array values
 
-    $filename_text = $xml_values[14];
+    $filename_text = $xml_values[4];
     # get only filename from $filename absolute file path
     $filename_text = basename($filename_text);
     # change extension of filename to .mp4
@@ -315,6 +315,8 @@ class getClips extends QueryDownloaderBase implements QueryDownloader
     $this->logging("\nFUNCTION __destruct\n");
     if ($this->settings["auto_download"]) {
       $this->generate_zip();
+      # HTTP Redirect to download url with $tmp_file as the query string
+      header("Location: " . $this->settings["download_url"] . "index.php?file=" .$this->random_filename . ".zip&download_url=" . $this->settings["download_url"]); 
     }
   }
 }
