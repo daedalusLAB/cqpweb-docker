@@ -159,6 +159,12 @@ class getClips extends QueryDownloaderBase implements QueryDownloader
 
     $kwic_chunks = explode('--<<>>--', preg_replace("/\A\s*\d+: <.*?>:\s+/", '', $cqp_line));
 
+    # Use this regex: --<<>>--(.*)\/.*(\s.*)\/.*(\s.*)\/.*--<<>>-- with $cqp_line variable
+    preg_match('/--<<>>--(.*)\/.*\s(.*)\/.*\s(.*)\/.*--<<>>--/mxsuU', $cqp_line, $matches);
+    # implode the matches array 1 to end elements into a string
+    $matches = array_slice($matches, 1);
+    $matched_word = implode('_', $matches);
+
     $untagged_bits = array();
     $tagged_bits   = array();
     $xml_before_string = $xml_after_string = '';
@@ -259,7 +265,7 @@ class getClips extends QueryDownloaderBase implements QueryDownloader
     # get only filename from $filename absolute file path
     $filename_text = basename($filename_text);
     # change extension of filename to .mp4
-    $filename_text = substr($filename_text, 0, -4) . "_" . $starttimelong . "-" . $endtimelong .  ".mp4";
+    $filename_text = substr($filename_text, 0, -4) . "-"  . $matched_word . "-" . $starttimelong . "_" . $endtimelong .  ".mp4";
 
     #return $this->next_hit++ . "\t" . $text_id_value ."\t". $untagged . $tagged . "\t" . join("\t", $xml_values) . "\t" . $cpos_begin . "\t" . $cpos_end . "\t" . $additional_columns ."\t" . $this->eol ;
     $output = "curl -L -o " .  $filename_text . " \"" . $additional_columns . "\"" . $this->eol;
