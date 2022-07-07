@@ -304,7 +304,7 @@ class getClips extends QueryDownloaderBase implements QueryDownloader
     $tmp_file = $tmp_dir . "/" . uniqid();
     file_put_contents($tmp_file, "#!/bin/sh\n");
     file_put_contents($tmp_file, implode("\n", $this->curl_lines), FILE_APPEND);
-    file_put_contents($tmp_file, "\nzip -j " . $this->settings["download_path"]  .  $this->random_filename . ".zip  " . $tmp_dir . "/*.mp4", FILE_APPEND);
+    file_put_contents($tmp_file, "\nzip -j " . $this->settings["download_path"]  .  $this->random_filename . ".zip  " . $tmp_dir . "/*.mp4 " . $tmp_file , FILE_APPEND);
     
     file_put_contents($tmp_file, "\nrm -f " . $tmp_dir ."/*.mp4" , FILE_APPEND);
     chmod($tmp_file, 0755);
