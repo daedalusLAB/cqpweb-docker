@@ -10,11 +10,12 @@ services:
       - .:/code 
     depends_on:
       - db
+    restart: unless-stopped
   db:
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=letmein
     volumes:
       - ./mysql/init:/docker-entrypoint-initdb.d
-
+    restart: unless-stopped
   
