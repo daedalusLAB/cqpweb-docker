@@ -37,6 +37,7 @@ class getClips extends QueryDownloaderBase implements QueryDownloader
     $random = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 16);
     $date = date("Y-m-d-TH-i-s");
     $this->random_filename = $date . "_" . $random ;
+    ob_start();
     return;
   }
 
