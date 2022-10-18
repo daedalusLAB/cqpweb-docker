@@ -10,6 +10,7 @@ services:
       - .:/code 
     depends_on:
       - db
+    restart: unless-stopped
   db:
     image: mysql:5.7
     environment:
@@ -17,4 +18,4 @@ services:
     volumes:
       - ./mysql/init:/docker-entrypoint-initdb.d
       - ./mysql/data:/var/lib/mysql
-  
+    restart: unless-stopped  
