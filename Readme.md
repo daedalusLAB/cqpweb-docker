@@ -1,11 +1,5 @@
 # CQPweb Corpus + GetClips Howto
 
-<aside>
-💡 I’m a beginner in cpqweb. Please, if you see something wrong/weird contact me: Raúl Sánchez <raul@um.es>. I will be grateful 😀
-
-</aside>
-
-
 # Git repository
 
 You can find everything you will need to create a new instance of cqpweb with the getClips plugin in this repository.
