@@ -1,4 +1,5 @@
 <?php
+
 ############################################################################################################################################################
 ## Raúl Sánchez <raul@um.es> based on Ellen Roberts and Peter Uhrig Download Rapid Annotator add-on for CQPweb (Andrew Hardie and collaborators)
 ## This plugin relies in curl and zip executables. So have access to execute scripts in your host machine.
@@ -17,7 +18,7 @@ class getClips extends QueryDownloaderBase implements QueryDownloader
     "headers_after_XML" => ["Matchbegin corpus position", "Matchend corpus position", "Video URL", "Video Snippet", "Video Snippet (long)", "Audio Snippet", "Audio Snippet (long)", "Screenshot"],
     "snippet_long_context" => 2, # Default here is seconds e.g. two seconds to either side
     "video_snippet_long_template" => "https://gallo.case.edu/cgi-bin/snippets/newsscape_mp4_snippet.cgi?file={{video_id}}&start={{start_time_long}}&end={{end_time_long}}",
-    "download_url" => "http://kaneda.inf.um.es/CQPweb/downloads/",
+    "download_url" => "http://155.54.204.6/CQPweb/downloads/",
     # download_path MUST exists and have right permissions. Web server must have write permissions to this directory.
     "download_path" => "/var/www/html/CQPweb/downloads/",
     "auto_download" => true, # If true, the download will be run automatically.
@@ -28,16 +29,18 @@ class getClips extends QueryDownloaderBase implements QueryDownloader
 
   private string $random_filename;
   private array $curl_lines;
+   
+
 
 
   ## Option to add extra configuration in here as needed
   public function __construct(array $extra_config = [])
   {
-    # random filename
+    # random filename 
+    ob_start();
     $random = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 16);
     $date = date("Y-m-d-TH-i-s");
     $this->random_filename = $date . "_" . $random ;
-    ob_start();
     return;
   }
 
@@ -268,10 +271,10 @@ class getClips extends QueryDownloaderBase implements QueryDownloader
     # change extension of filename to .mp4
     # FILENAME format: 2016-03-21_2200_US_MSNBC_MSNBC_Live_411.69-416.41_from-beginning-to.mp4
     $filename_text = substr($filename_text, 0, -4) . "_" . $starttimelong . "-" . $endtimelong . "_" . $matched_word . ".mp4";
-    #$filename_text = substr($filename_text, 0, -4) . "-"  . $matched_word . "-" . $starttimelong . "_" . $endtimelong .  ".mp4";
+    #$filename_text = substr($filename_text, 0, -4) . "-"  . $matched_word . "-" . $starttimelong . "_" . $endtimelong . ".mp4";
 
     #return $this->next_hit++ . "\t" . $text_id_value ."\t". $untagged . $tagged . "\t" . join("\t", $xml_values) . "\t" . $cpos_begin . "\t" . $cpos_end . "\t" . $additional_columns ."\t" . $this->eol ;
-    $output = "curl -L -o " .  $filename_text . " \"" . $additional_columns . "\"" . $this->eol;
+    $output = "curl -L -o " .  $filename_text . " \"" . $additional_columns . "\"\n" ; #. $this->eol;
     # append $output to curl_lines array last row of the array
     $this->curl_lines[] = $output;
     return $output;
@@ -299,7 +302,6 @@ class getClips extends QueryDownloaderBase implements QueryDownloader
   public function generate_zip()
   {
     $this->logging("FUNCTION generate_zip\n");
-    
     # create a random tmp dir
     $tmp_dir = sys_get_temp_dir() . "/" . uniqid();
     mkdir($tmp_dir, 0777, true);
@@ -314,18 +316,24 @@ class getClips extends QueryDownloaderBase implements QueryDownloader
     # change directory to tmp_dir
     chdir($tmp_dir);
     # exec tmp_file in background
-    exec($tmp_file . ' >/dev/null 2>&1 &'); 
-
+    exec($tmp_file . ' >/dev/null 2>&1 &');
+  
   }
 
   ## We will use this funcion to launch curl commands to download videos
-  public function __destruct()
+  public function __destruct()  
   {
     $this->logging("\nFUNCTION __destruct\n");
+    # log all $this->curl_lines items
+    $this->logging("CURL LINES\n");
+    $this->logging(implode("\n", $this->curl_lines));
     if ($this->settings["auto_download"]) {
-      $this->generate_zip();
-      # HTTP Redirect to download url with $tmp_file as the query string
-      header("Location: " . $this->settings["download_url"] . "index.php?file=" .$this->random_filename . ".zip&download_url=" . $this->settings["download_url"]); 
+       # if $this->$curl_lines is not empty
+      if (!empty($this->curl_lines)) {   
+        $this->generate_zip();
+        # HTTP Redirect to download url with $tmp_file as the query string
+        header("Location: " . $this->settings["download_url"] . "index.php?file=" .$this->random_filename . ".zip&download_url=" . $this->settings["download_url"]); 
+      } 
     }
   }
 }
