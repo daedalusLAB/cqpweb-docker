@@ -272,6 +272,7 @@ class getClips extends QueryDownloaderBase implements QueryDownloader
     # FILENAME format: 2016-03-21_2200_US_MSNBC_MSNBC_Live_411.69-416.41_from-beginning-to.mp4
     $filename_text = substr($filename_text, 0, -4) . "_" . $starttimelong . "-" . $endtimelong . "_" . $matched_word . ".mp4";
     #$filename_text = substr($filename_text, 0, -4) . "-"  . $matched_word . "-" . $starttimelong . "_" . $endtimelong . ".mp4";
+    $filename_text = preg_replace("/['\"]/", '', $filename_text);
 
     #return $this->next_hit++ . "\t" . $text_id_value ."\t". $untagged . $tagged . "\t" . join("\t", $xml_values) . "\t" . $cpos_begin . "\t" . $cpos_end . "\t" . $additional_columns ."\t" . $this->eol ;
     $output = "curl -L -o " .  $filename_text . " \"" . $additional_columns . "\"\n" ; #. $this->eol;
