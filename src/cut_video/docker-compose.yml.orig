@@ -1,0 +1,15 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      # - .:/var/www/html
+      # readonly volume for TV
+      - ~/TV:/app/TV:ro
+      # read-write volume for tmp
+      - ~/TV/tmp:/app/tmp
+    environment:
+      - TMP_PATH=/app/tmp
+      - VIDEOS_PATH=/app/TV
